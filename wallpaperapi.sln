@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33213.308
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "wallpaperapi", "wallpaperapi\wallpaperapi.csproj", "{35449BB4-EEE0-4567-A97C-1F318EDF6A47}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{35449BB4-EEE0-4567-A97C-1F318EDF6A47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35449BB4-EEE0-4567-A97C-1F318EDF6A47}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35449BB4-EEE0-4567-A97C-1F318EDF6A47}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35449BB4-EEE0-4567-A97C-1F318EDF6A47}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {106A86CE-8D23-4242-B666-DEF7FC21506D}
+	EndGlobalSection
+EndGlobal
