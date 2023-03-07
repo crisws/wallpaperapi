@@ -6,17 +6,19 @@ using wallpaperapi.Data;
 using wallpaperapi.Data.Entity;
 using wallpaperapi.Data.Enums;
 using wallpaperapi.Models.Request;
+using wallpaperapi.Models.Response;
 using wallpaperapi.Service;
 
 namespace wallpaperapi.Repository
 {
     public class WallpaperRepository : IWallpaperRepository
     {
-        private readonly WallpaperDbContext context;
+        private readonly WallpaperDbContext _context;
+
         private readonly IAzureStorageService azureStorageService;
         public WallpaperRepository(WallpaperDbContext context, IAzureStorageService azureStorageService)
         {
-            this.context = context;
+            _context = context;
             this.azureStorageService = azureStorageService;
 
         }
@@ -58,25 +60,45 @@ namespace wallpaperapi.Repository
             }
 
 
-            this.context.Add(wallpaper);
-            this.context.SaveChanges();
+            _context.Add(wallpaper);
+            _context.SaveChanges();
 
             return wallpaper;
         }
 
-        public List<Wallpaper> GetAll()
+        public WallpaperListResponse GetAll()
         {
-            return this.context.Wallpapers.ToList();
+            WallpaperListResponse response = new WallpaperListResponse();
+
+            var r = _context.Wallpapers
+                .Join(_context.Categorys,
+                    w => w.CategoryId,
+                    c => c.Id,
+                    (w,c) => new WallpaperForListResponse
+                    { 
+                        Id = w.Id, AddedDate = w.AddedDate, 
+                        Category = c.Name, 
+                        Name = w.Name, 
+                        ThumbnailDesktopLink = w.ThumbnailDesktopLink,
+                        ThumbnailMobileLink = w.ThumbnailMobileLink, 
+                        WallpaperDesktopLink= w.WallpaperDesktopLink, 
+                        WallpaperMobileLink = w.WallpaperMobileLink
+                    })
+                .ToList();
+            response.Wallpapers= r;
+
+            return response;
+
         }
 
         public Wallpaper GetById(int id)
         {
-            return this.context.Wallpapers.Find(id);
+            return _context.Wallpapers.Find(id);
         }
 
         public async Task RemoveByIdAsync(int id)
         {
-            var wallpaper = this.context.Wallpapers.Find(id);
+            var wallpaper = _context.Wallpapers.Find(id);
             if (wallpaper != null)
             {
                 if (!string.IsNullOrEmpty(wallpaper.GuidImg))
@@ -84,8 +106,8 @@ namespace wallpaperapi.Repository
                     await this.azureStorageService.DeleteAsync(ContainerEnum.baseimage, wallpaper.GuidImg);
                 }
 
-                this.context.Remove(wallpaper);
-                this.context.SaveChanges();
+                _context.Remove(wallpaper);
+                _context.SaveChanges();
             }
         }
      
@@ -93,7 +115,7 @@ namespace wallpaperapi.Repository
 
     public interface IWallpaperRepository
     {
-        List<Wallpaper> GetAll();
+        WallpaperListResponse GetAll();
         Wallpaper GetById(int id);
         Task<Wallpaper> AddAsync(WallpaperRequest request);
         Task RemoveByIdAsync(int id);

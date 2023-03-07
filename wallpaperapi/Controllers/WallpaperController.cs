@@ -27,6 +27,12 @@ namespace wallpaperapi.Controllers
             return Ok(await _wallpaperRepository.AddAsync(wallpaper));
         }
 
+        [HttpGet]
+        public async Task<ActionResult> GetAll()
+        {
+            return Ok(_wallpaperRepository.GetAll());
+        }
+
 
     }
 }
