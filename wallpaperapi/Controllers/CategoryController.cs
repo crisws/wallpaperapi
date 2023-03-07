@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System.Data;
 using wallpaperapi.Data;
 using wallpaperapi.Data.Entity;
 using wallpaperapi.Models.Request;
@@ -6,7 +8,7 @@ using wallpaperapi.Repository;
 
 namespace wallpaperapi.Controllers
 {
-
+    [Authorize(Roles = "Admin")]
     [Route("api/[controller]")]
     [ApiController]
     public class CategoryController : ControllerBase

@@ -1,12 +1,15 @@
 ﻿using Azure.Core;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 using wallpaperapi.Data;
 using wallpaperapi.Models.Request;
 using wallpaperapi.Repository;
 
 namespace wallpaperapi.Controllers
 {
+    [Authorize(Roles = "Admin")]
     [Route("api/[controller]")]
     [ApiController]
     public class WallpaperController : ControllerBase
