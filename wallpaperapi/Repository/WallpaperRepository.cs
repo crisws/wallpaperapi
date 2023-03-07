@@ -77,7 +77,8 @@ namespace wallpaperapi.Repository
                     (w,c) => new WallpaperForListResponse
                     { 
                         Id = w.Id, AddedDate = w.AddedDate, 
-                        Category = c.Name, 
+                        Category = c.Name,
+                        CategoryId = c.Id,
                         Name = w.Name, 
                         ThumbnailDesktopLink = w.ThumbnailDesktopLink,
                         ThumbnailMobileLink = w.ThumbnailMobileLink, 
@@ -86,6 +87,34 @@ namespace wallpaperapi.Repository
                     })
                 .ToList();
             response.Wallpapers= r;
+
+            return response;
+
+        }
+
+        public WallpaperListResponse GetAllByCategoryId(long FCategoryId)
+        {
+            WallpaperListResponse response = new WallpaperListResponse();
+
+            var r = _context.Wallpapers
+                .Join(_context.Categorys,
+                    w => w.CategoryId,
+                    c => c.Id,
+                    (w, c) => new WallpaperForListResponse
+                    {
+                        Id = w.Id,
+                        AddedDate = w.AddedDate,
+                        Category = c.Name,
+                        CategoryId = c.Id,
+                        Name = w.Name,
+                        ThumbnailDesktopLink = w.ThumbnailDesktopLink,
+                        ThumbnailMobileLink = w.ThumbnailMobileLink,
+                        WallpaperDesktopLink = w.WallpaperDesktopLink,
+                        WallpaperMobileLink = w.WallpaperMobileLink
+                    })
+                .Where(x => x.CategoryId == FCategoryId)
+                .ToList();
+            response.Wallpapers = r;
 
             return response;
 
@@ -115,6 +144,7 @@ namespace wallpaperapi.Repository
 
     public interface IWallpaperRepository
     {
+        WallpaperListResponse GetAllByCategoryId(long categoryId);
         WallpaperListResponse GetAll();
         Wallpaper GetById(int id);
         Task<Wallpaper> AddAsync(WallpaperRequest request);

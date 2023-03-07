@@ -22,6 +22,6 @@ namespace wallpaperapi.Models.Request
         [AllowedExtensions(new string[] { ".jpg", ".jpeg", ".png" })]
         public IFormFile WallpaperDesktopImage { get; set; }
 
-        public long CategoryId { get; set; }
+        public int CategoryId { get; set; }
     }
 }

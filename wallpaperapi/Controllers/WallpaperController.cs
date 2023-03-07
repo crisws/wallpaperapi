@@ -34,5 +34,12 @@ namespace wallpaperapi.Controllers
         }
 
 
+
+        [HttpGet("{CategoryId}")]
+        public async Task<ActionResult> GetAllByCategoryId(long CategoryId)
+        {
+            return Ok(_wallpaperRepository.GetAllByCategoryId(CategoryId));
+        }
+
     }
 }

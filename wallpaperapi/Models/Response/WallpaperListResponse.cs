@@ -17,5 +17,8 @@ namespace wallpaperapi.Models.Response
         public string WallpaperMobileLink { get; set; }
         public string WallpaperDesktopLink { get; set; }
         public string Category { get; set; }
+
+        public long CategoryId { get; set; }
+
     }
 }
