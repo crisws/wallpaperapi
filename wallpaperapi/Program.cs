@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using wallpaperapi.Data;
+using wallpaperapi.Repository;
+using wallpaperapi.Service;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +12,10 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<WallpaperDbContext>(options => options.UseSqlServer("name=Wallpaper"));
+builder.Services.AddScoped<IWallpaperRepository, WallpaperRepository>();
+builder.Services.AddScoped<IAzureStorageService, AzureBlobSotrageService>();
+
+builder.Services.AddCors();
 
 
 var app = builder.Build();
@@ -22,6 +28,11 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseCors(options =>
+{
+    options.AllowAnyOrigin();
+    options.AllowAnyMethod();
+});
 
 app.UseAuthorization();
 

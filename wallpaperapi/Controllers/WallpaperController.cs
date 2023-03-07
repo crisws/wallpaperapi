@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Azure.Core;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using wallpaperapi.Data;
-using wallpaperapi.Data.Entity;
+using wallpaperapi.Models.Request;
+using wallpaperapi.Repository;
 
 namespace wallpaperapi.Controllers
 {
@@ -10,24 +12,21 @@ namespace wallpaperapi.Controllers
     public class WallpaperController : ControllerBase
     {
         private readonly WallpaperDbContext _context;
+        private readonly IWallpaperRepository _wallpaperRepository;
         //private readonly ServerConfiguration _ServerConfiguration;
 
-        public WallpaperController(WallpaperDbContext context)
+        public WallpaperController(WallpaperDbContext context, IWallpaperRepository wallpaperrepository)
         {
-            this._context = context; 
+            _context = context; 
+            _wallpaperRepository = wallpaperrepository;
         }
 
         [HttpPost]
-        public async Task<ActionResult> Post(Wallpaper wallpaper)
+        public async Task<ActionResult> Post([FromForm]WallpaperRequest wallpaper)
         {
-            wallpaper.AddedDate= DateTime.Now.ToUniversalTime();
-            wallpaper.GuidImg = Guid.NewGuid().ToString();
-            _context.Add(wallpaper);
-            await _context.SaveChangesAsync();
-            return Ok();
+            return Ok(await _wallpaperRepository.AddAsync(wallpaper));
+
         }
-
-
 
 
     }
