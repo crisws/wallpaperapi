@@ -1,4 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.Extensions.Configuration;
+using System;
+using System.ComponentModel;
 using wallpaperapi.Data;
 using wallpaperapi.Data.Entity;
 using wallpaperapi.Data.Enums;
@@ -15,6 +18,7 @@ namespace wallpaperapi.Repository
         {
             this.context = context;
             this.azureStorageService = azureStorageService;
+
         }
 
         public async Task<Wallpaper> AddAsync(WallpaperRequest request)
@@ -23,13 +27,34 @@ namespace wallpaperapi.Repository
             var wallpaper = new Wallpaper()
             {
                 Name = request.Name,
-                AddedDate = DateTime.Now.ToUniversalTime()
+                AddedDate = DateTime.Now.ToUniversalTime(),
+                CategoryId = request.CategoryId,
             };
             
 
             if (request.Image != null)
             {
                 wallpaper.GuidImg = await this.azureStorageService.UploadAsync(request.Image, ContainerEnum.baseimage);
+            }
+
+            if (request.ThumbnailDesktopImage != null)
+            {
+                wallpaper.ThumbnailDesktopLink = await this.azureStorageService.UploadAsync(request.ThumbnailDesktopImage, ContainerEnum.thumbnaildesktop);
+            }
+
+            if (request.ThumbnailMobileImage != null)
+            {
+                wallpaper.ThumbnailMobileLink = await this.azureStorageService.UploadAsync(request.ThumbnailMobileImage, ContainerEnum.thumbnailmobile);
+            }
+
+            if (request.WallpaperDesktopImage != null)
+            {
+                wallpaper.WallpaperDesktopLink = await this.azureStorageService.UploadAsync(request.WallpaperDesktopImage, ContainerEnum.wallpaperdesktop);
+            }
+
+            if (request.WallpaperMobileImage != null)
+            {
+                wallpaper.WallpaperMobileLink = await this.azureStorageService.UploadAsync(request.WallpaperMobileImage, ContainerEnum.wallpapermobile);
             }
 
 

@@ -6,17 +6,21 @@ namespace wallpaperapi.Service
 {
     public class AzureBlobSotrageService : IAzureStorageService
     {
-        private readonly string azureStorageConnectionString;
+        private readonly string _azureStorageConnectionString;
+        private readonly string _baselink;
+
 
         public AzureBlobSotrageService(IConfiguration configuration)
         {
-            this.azureStorageConnectionString = configuration.GetValue<string>("AzureStorageConnectionString");
+            _azureStorageConnectionString = configuration.GetValue<string>("AzureStorageConnectionString");
+            _baselink = configuration.GetValue<string>("AzureLinkBase");
+
         }
 
         public async Task DeleteAsync(ContainerEnum container, string blobFilename)
         {
             var containerName = Enum.GetName(typeof(ContainerEnum), container).ToLower();
-            var blobContainerClient = new BlobContainerClient(this.azureStorageConnectionString, containerName);
+            var blobContainerClient = new BlobContainerClient(_azureStorageConnectionString, containerName);
             var blobClient = blobContainerClient.GetBlobClient(blobFilename);
 
             try
@@ -34,9 +38,8 @@ namespace wallpaperapi.Service
 
             var containerName = Enum.GetName(typeof(ContainerEnum), container).ToLower();
 
-            var blobContainerClient = new BlobContainerClient(this.azureStorageConnectionString, containerName);
+            var blobContainerClient = new BlobContainerClient(_azureStorageConnectionString, containerName);
 
-            // Get a reference to the blob just uploaded from the API in a container from configuration settings
             var extension = Path.GetExtension(file.FileName);
 
 
@@ -60,7 +63,7 @@ namespace wallpaperapi.Service
                 await blobClient.UploadAsync(stream, new BlobUploadOptions { HttpHeaders = blobHttpHeader });
             }
 
-            return blobName;
+            return _baselink +"/"+ containerName +"/"+ blobName;
         }
     }
 

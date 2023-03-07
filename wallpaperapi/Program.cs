@@ -13,6 +13,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<WallpaperDbContext>(options => options.UseSqlServer("name=Wallpaper"));
 builder.Services.AddScoped<IWallpaperRepository, WallpaperRepository>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IAzureStorageService, AzureBlobSotrageService>();
 
 builder.Services.AddCors();

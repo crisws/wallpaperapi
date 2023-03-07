@@ -10,5 +10,9 @@ namespace wallpaperapi.Data
         }
 
         public DbSet<Wallpaper> Wallpapers => Set<Wallpaper>();
+        public DbSet<Category> Categorys => Set<Category>();
+
+
+        
     }
 }

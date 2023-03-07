@@ -25,7 +25,6 @@ namespace wallpaperapi.Controllers
         public async Task<ActionResult> Post([FromForm]WallpaperRequest wallpaper)
         {
             return Ok(await _wallpaperRepository.AddAsync(wallpaper));
-
         }
 
 
