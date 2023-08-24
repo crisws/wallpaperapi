@@ -36,9 +36,9 @@ builder.Services.AddSwaggerGen(options =>
 
     options.SwaggerDoc(groupName, new OpenApiInfo
     {
-        Title = $"Checadas {groupName}",
+        Title = $"Wallpaper {groupName}",
         Version = groupName,
-        Description = "Checadas API",
+        Description = "Wallpaper API",
     });
 
     options.MapType<TimeSpan>(() => new OpenApiSchema
@@ -121,9 +121,11 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+   
 }
+
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 app.UseCors(options =>
